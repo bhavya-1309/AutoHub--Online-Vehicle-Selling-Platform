@@ -1,0 +1,32 @@
+<%- include('../partials/header') %>
+<div class="form-page">
+  <h2>All Listings</h2>
+  <% if (listings.length === 0) { %>
+    <div class="empty-state"><p>No listings available right now.</p></div>
+  <% } else { %>
+  <div class="listings-grid">
+    <% listings.forEach(l => { %>
+    <a href="/listings/<%= l._id %>" class="card">
+      <div class="card-img">
+        <% if (l.images && l.images.length > 0) { %>
+          <img src="<%= l.images[0] %>" alt="<%= l.title %>"/>
+        <% } else { %>
+          <div class="no-img"></div>
+        <% } %>
+        <span class="badge badge-<%= l.category.toLowerCase() %>"><%= l.category %></span>
+      </div>
+      <div class="card-body">
+        <h3><%= l.title %></h3>
+        <p class="card-meta"><%= l.brand %> <%= l.model %> &bull; <%= l.year %></p>
+        <% if (l.mileage) { %><p class="card-meta"><%= l.mileage.toLocaleString() %> km</p><% } %>
+        <div class="card-footer">
+          <span class="price">₹<%= l.price.toLocaleString('en-IN') %></span>
+          <span class="location"> <%= l.location %></span>
+        </div>
+      </div>
+    </a>
+    <% }) %>
+  </div>
+  <% } %>
+</div>
+<%- include('../partials/footer') %>

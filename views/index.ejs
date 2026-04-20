@@ -1,0 +1,55 @@
+<%- include('partials/header') %>
+
+<section class="hero">
+  <div class="hero-text">
+    <h1>Find Your Perfect<br/><span class="accent">Used Vehicle</span></h1>
+    <p>Browse thousands of cars, bikes & more. Book test drives instantly.</p>
+  </div>
+  <form class="search-bar" method="GET" action="/">
+    <input type="text" name="search" placeholder="Search brand, model..." value="<%= query.search || '' %>" />
+    <select name="category">
+      <option value="">All Types</option>
+      <% ['Car','Bike','Truck','Scooter','Other'].forEach(c => { %>
+        <option value="<%= c %>" <%= query.category === c ? 'selected' : '' %>><%= c %></option>
+      <% }) %>
+    </select>
+    <input type="number" name="minPrice" placeholder="Min ₹" value="<%= query.minPrice || '' %>" />
+    <input type="number" name="maxPrice" placeholder="Max ₹" value="<%= query.maxPrice || '' %>" />
+    <button type="submit" class="btn-primary">Search</button>
+  </form>
+</section>
+
+<section class="listings-section">
+  <h2 class="section-title">Latest Listings</h2>
+  <% if (listings.length === 0) { %>
+    <div class="empty-state">
+      <p>No vehicles found. <a href="/listings/new">Be the first to list one!</a></p>
+    </div>
+  <% } else { %>
+  <div class="listings-grid">
+    <% listings.forEach(l => { %>
+    <a href="/listings/<%= l._id %>" class="card">
+      <div class="card-img">
+        <% if (l.images && l.images.length > 0) { %>
+          <img src="<%= l.images[0] %>" alt="<%= l.title %>" />
+        <% } else { %>
+          <div class="no-img">🚗</div>
+        <% } %>
+        <span class="badge badge-<%= l.category.toLowerCase() %>"><%= l.category %></span>
+      </div>
+      <div class="card-body">
+        <h3><%= l.title %></h3>
+        <p class="card-meta"><%= l.brand %> <%= l.model %> &bull; <%= l.year %></p>
+        <% if (l.mileage) { %><p class="card-meta"><%= l.mileage.toLocaleString() %> km</p><% } %>
+        <div class="card-footer">
+          <span class="price">₹<%= l.price.toLocaleString('en-IN') %></span>
+          <span class="location">📍 <%= l.location %></span>
+        </div>
+      </div>
+    </a>
+    <% }) %>
+  </div>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>

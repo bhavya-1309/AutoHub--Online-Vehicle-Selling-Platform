@@ -1,0 +1,49 @@
+<%- include('../partials/header') %>
+<div class="form-page">
+  <h2>Incoming Booking Requests</h2>
+
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+
+  <% if (appointments.length === 0) { %>
+    <div class="empty-state">
+      <p>No booking requests yet.</p>
+      <a href="/listings/my" class="btn-primary">View My Listings</a>
+    </div>
+  <% } else { %>
+  <div class="appt-list">
+    <% appointments.forEach(a => { %>
+    <div class="appt-card status-border-<%= a.status %>">
+      <div class="appt-vehicle">
+        <div>
+          <h3><%= a.listing.title %></h3>
+          <p><%= a.listing.brand %> <%= a.listing.model %> &bull; ₹<%= a.listing.price.toLocaleString('en-IN') %></p>
+        </div>
+      </div>
+      <div class="appt-details">
+        <p>📅 <strong><%= new Date(a.date).toDateString() %></strong> at <strong><%= a.time %></strong></p>
+        <p>👤 Buyer: <strong><%= a.buyer.name %></strong></p>
+        <% if (a.buyer.phone) { %><p>📞 <%= a.buyer.phone %></p><% } %>
+        <p>📧 <%= a.buyer.email %></p>
+        <% if (a.message) { %><p>💬 "<%= a.message %>"</p><% } %>
+        <div class="appt-footer">
+          <span class="status-pill status-<%= a.status %>"><%= a.status %></span>
+          <% if (a.status === 'pending') { %>
+          <form method="POST" action="/appointments/<%= a._id %>/status" style="display:inline;">
+            <input type="hidden" name="status" value="confirmed"/>
+            <button type="submit" class="btn-sm btn-success">✓ Confirm</button>
+          </form>
+          <form method="POST" action="/appointments/<%= a._id %>/status" style="display:inline;">
+            <input type="hidden" name="status" value="cancelled"/>
+            <button type="submit" class="btn-sm btn-danger">✗ Decline</button>
+          </form>
+          <% } %>
+        </div>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+  <% } %>
+</div>
+<%- include('../partials/footer') %>

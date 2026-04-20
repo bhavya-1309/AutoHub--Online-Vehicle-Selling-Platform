@@ -1,0 +1,100 @@
+<%- include('../partials/header') %>
+<div class="form-page">
+  <h2>Edit Listing</h2>
+  <% if (error) { %><div class="alert alert-error"><%= error %></div><% } %>
+
+  <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" class="listing-form">
+
+    <div class="form-group">
+      <label>Listing Title *</label>
+      <input type="text" name="title" required value="<%= listing.title %>"/>
+    </div>
+
+    <div class="form-row two-col">
+      <div class="form-group">
+        <label>Category *</label>
+        <select name="category" required>
+          <% ['Car','Bike','Truck','Scooter','Other'].forEach(c => { %>
+            <option value="<%= c %>" <%= listing.category === c ? 'selected' : '' %>><%= c %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Brand *</label>
+        <input type="text" name="brand" required value="<%= listing.brand %>"/>
+      </div>
+    </div>
+
+    <div class="form-row two-col">
+      <div class="form-group">
+        <label>Model *</label>
+        <input type="text" name="model" required value="<%= listing.model %>"/>
+      </div>
+      <div class="form-group">
+        <label>Year *</label>
+        <input type="number" name="year" required value="<%= listing.year %>"/>
+      </div>
+    </div>
+
+    <div class="form-row two-col">
+      <div class="form-group">
+        <label>Price (₹) *</label>
+        <input type="number" name="price" required value="<%= listing.price %>"/>
+      </div>
+      <div class="form-group">
+        <label>Mileage (km)</label>
+        <input type="number" name="mileage" value="<%= listing.mileage || '' %>"/>
+      </div>
+    </div>
+
+    <div class="form-row two-col">
+      <div class="form-group">
+        <label>Fuel Type</label>
+        <select name="fuel">
+          <option value="">Select...</option>
+          <% ['Petrol','Diesel','Electric','CNG','Hybrid'].forEach(f => { %>
+            <option value="<%= f %>" <%= listing.fuel === f ? 'selected' : '' %>><%= f %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Transmission</label>
+        <select name="transmission">
+          <option value="">Select...</option>
+          <option value="Manual" <%= listing.transmission === 'Manual' ? 'selected' : '' %>>Manual</option>
+          <option value="Automatic" <%= listing.transmission === 'Automatic' ? 'selected' : '' %>>Automatic</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row two-col">
+      <div class="form-group">
+        <label>Color</label>
+        <input type="text" name="color" value="<%= listing.color || '' %>"/>
+      </div>
+      <div class="form-group">
+        <label>Location *</label>
+        <input type="text" name="location" required value="<%= listing.location %>"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Description</label>
+      <textarea name="description" rows="4"><%= listing.description || '' %></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Status</label>
+      <select name="status">
+        <option value="available" <%= listing.status === 'available' ? 'selected' : '' %>>Available</option>
+        <option value="sold" <%= listing.status === 'sold' ? 'selected' : '' %>>Sold</option>
+      </select>
+    </div>
+
+    <div class="action-btns">
+      <button type="submit" class="btn-primary">Save Changes</button>
+      <a href="/listings/my" class="btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+<%- include('../partials/footer') %>

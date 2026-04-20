@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AutoBazaar – Used Vehicles Marketplace</title>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar">
+  <a href="/" class="logo">AutoHub</a>
+  <div class="nav-links">
+    <a href="/">Browse</a>
+    <% if (user) { %>
+      <a href="/listings/new">+ Sell</a>
+      <a href="/listings/my">My Listings</a>
+      <a href="/appointments/my">My Bookings</a>
+      <a href="/appointments/incoming">Requests</a>
+      <a href="/auth/logout" class="btn-outline">Logout (<%= user.name.split(' ')[0] %>)</a>
+    <% } else { %>
+      <a href="/auth/login" class="btn-outline">Login</a>
+      <a href="/auth/register" class="btn-primary">Register</a>
+    <% } %>
+  </div>
+</nav>

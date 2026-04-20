@@ -1,0 +1,57 @@
+<%- include('../partials/header') %>
+<div class="form-page">
+  <div class="page-header">
+    <h2>My Listings</h2>
+    <a href="/listings/new" class="btn-primary">+ New Listing</a>
+  </div>
+
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+
+  <% if (listings.length === 0) { %>
+    <div class="empty-state">
+      <p>You haven't posted any listings yet.</p>
+      <a href="/listings/new" class="btn-primary">Post Your First Vehicle</a>
+    </div>
+  <% } else { %>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Vehicle</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Location</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% listings.forEach(l => { %>
+        <tr>
+          <td>
+            <strong><%= l.brand %> <%= l.model %></strong><br/>
+            <small><%= l.year %></small>
+          </td>
+          <td><span class="badge badge-<%= l.category.toLowerCase() %>"><%= l.category %></span></td>
+          <td>₹<%= l.price.toLocaleString('en-IN') %></td>
+          <td>📍 <%= l.location %></td>
+          <td>
+            <span class="status-pill status-<%= l.status %>"><%= l.status %></span>
+          </td>
+          <td class="action-btns">
+            <a href="/listings/<%= l._id %>" class="btn-sm">View</a>
+            <a href="/listings/<%= l._id %>/edit" class="btn-sm btn-edit">Edit</a>
+            <form method="POST" action="/listings/<%= l._id %>?_method=DELETE" style="display:inline;" onsubmit="return confirm('Delete this listing?')">
+              <button type="submit" class="btn-sm btn-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <% } %>
+</div>
+<%- include('../partials/footer') %>

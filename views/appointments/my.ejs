@@ -1,0 +1,50 @@
+<%- include('../partials/header') %>
+<div class="form-page">
+  <h2>My Bookings</h2>
+
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+
+  <% if (appointments.length === 0) { %>
+    <div class="empty-state">
+      <p>You haven't booked any test drives yet.</p>
+      <a href="/" class="btn-primary">Browse Vehicles</a>
+    </div>
+  <% } else { %>
+  <div class="appt-list">
+    <% appointments.forEach(a => { %>
+    <div class="appt-card status-border-<%= a.status %>">
+      <div class="appt-vehicle">
+        <% if (a.listing.images && a.listing.images.length > 0) { %>
+          <img src="<%= a.listing.images[0] %>" alt="vehicle" class="appt-thumb"/>
+        <% } else { %>
+          <div class="no-img-sm">🚗</div>
+        <% } %>
+        <div>
+          <h3><%= a.listing.title %></h3>
+          <p><%= a.listing.brand %> <%= a.listing.model %></p>
+          <p class="price">₹<%= a.listing.price.toLocaleString('en-IN') %></p>
+        </div>
+      </div>
+      <div class="appt-details">
+        <p>📅 <strong><%= new Date(a.date).toDateString() %></strong> at <strong><%= a.time %></strong></p>
+        <p>👤 Seller: <%= a.seller.name %></p>
+        <% if (a.seller.phone) { %><p>📞 <%= a.seller.phone %></p><% } %>
+        <p>📧 <%= a.seller.email %></p>
+        <% if (a.message) { %><p>💬 "<%= a.message %>"</p><% } %>
+        <div class="appt-footer">
+          <span class="status-pill status-<%= a.status %>"><%= a.status %></span>
+          <% if (a.status === 'pending' || a.status === 'confirmed') { %>
+          <form method="POST" action="/appointments/<%= a._id %>/cancel" onsubmit="return confirm('Cancel this booking?')">
+            <button type="submit" class="btn-sm btn-danger">Cancel</button>
+          </form>
+          <% } %>
+        </div>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+  <% } %>
+</div>
+<%- include('../partials/footer') %>

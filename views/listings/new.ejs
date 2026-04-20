@@ -1,0 +1,98 @@
+<%- include('../partials/header') %>
+<div class="form-page">
+  <h2>Post a New Listing</h2>
+  <% if (error) { %><div class="alert alert-error"><%= error %></div><% } %>
+
+  <form method="POST" action="/listings" enctype="multipart/form-data" class="listing-form">
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Listing Title *</label>
+        <input type="text" name="title" required placeholder="e.g. 2019 Honda City in excellent condition"/>
+      </div>
+    </div>
+
+    <div class="form-row two-col">
+      <div class="form-group">
+        <label>Category *</label>
+        <select name="category" required>
+          <option value="">Select...</option>
+          <% ['Car','Bike','Truck','Scooter','Other'].forEach(c => { %>
+            <option value="<%= c %>"><%= c %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Brand *</label>
+        <input type="text" name="brand" required placeholder="Honda, Yamaha..."/>
+      </div>
+    </div>
+
+    <div class="form-row two-col">
+      <div class="form-group">
+        <label>Model *</label>
+        <input type="text" name="model" required placeholder="City, FZ, etc."/>
+      </div>
+      <div class="form-group">
+        <label>Year *</label>
+        <input type="number" name="year" required min="1990" max="2025" placeholder="2019"/>
+      </div>
+    </div>
+
+    <div class="form-row two-col">
+      <div class="form-group">
+        <label>Price (₹) *</label>
+        <input type="number" name="price" required placeholder="650000"/>
+      </div>
+      <div class="form-group">
+        <label>Mileage (km)</label>
+        <input type="number" name="mileage" placeholder="45000"/>
+      </div>
+    </div>
+
+    <div class="form-row two-col">
+      <div class="form-group">
+        <label>Fuel Type</label>
+        <select name="fuel">
+          <option value="">Select...</option>
+          <% ['Petrol','Diesel','Electric','CNG','Hybrid'].forEach(f => { %>
+            <option value="<%= f %>"><%= f %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Transmission</label>
+        <select name="transmission">
+          <option value="">Select...</option>
+          <option value="Manual">Manual</option>
+          <option value="Automatic">Automatic</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row two-col">
+      <div class="form-group">
+        <label>Color</label>
+        <input type="text" name="color" placeholder="White, Silver..."/>
+      </div>
+      <div class="form-group">
+        <label>Location *</label>
+        <input type="text" name="location" required placeholder="Pune, Maharashtra"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Description</label>
+      <textarea name="description" rows="4" placeholder="Describe condition, features, reason for selling..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Photos (up to 4)</label>
+      <input type="file" name="images" accept="image/*" multiple/>
+      <small>JPG/PNG, max 5MB each</small>
+    </div>
+
+    <button type="submit" class="btn-primary">Post Listing</button>
+  </form>
+</div>
+<%- include('../partials/footer') %>

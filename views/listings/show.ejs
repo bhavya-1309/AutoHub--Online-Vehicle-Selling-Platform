@@ -1,0 +1,76 @@
+<%- include('../partials/header') %>
+<div class="detail-page">
+
+  <div class="detail-images">
+    <% if (listing.images && listing.images.length > 0) { %>
+      <img src="<%= listing.images[0] %>" alt="<%= listing.title %>" class="main-img"/>
+      <% if (listing.images.length > 1) { %>
+      <div class="thumb-row">
+        <% listing.images.slice(1).forEach(img => { %>
+          <img src="<%= img %>" alt="thumb" class="thumb-img"/>
+        <% }) %>
+      </div>
+      <% } %>
+    <% } else { %>
+      <div class="no-img-large">🚗</div>
+    <% } %>
+  </div>
+
+  <div class="detail-info">
+    <span class="badge badge-<%= listing.category.toLowerCase() %>"><%= listing.category %></span>
+    <h1><%= listing.title %></h1>
+    <p class="detail-price">₹<%= listing.price.toLocaleString('en-IN') %></p>
+
+    <div class="specs-grid">
+      <div class="spec"><span>Brand</span><strong><%= listing.brand %></strong></div>
+      <div class="spec"><span>Model</span><strong><%= listing.model %></strong></div>
+      <div class="spec"><span>Year</span><strong><%= listing.year %></strong></div>
+      <% if (listing.mileage) { %>
+      <div class="spec"><span>Mileage</span><strong><%= listing.mileage.toLocaleString() %> km</strong></div>
+      <% } %>
+      <% if (listing.fuel) { %>
+      <div class="spec"><span>Fuel</span><strong><%= listing.fuel %></strong></div>
+      <% } %>
+      <% if (listing.transmission) { %>
+      <div class="spec"><span>Transmission</span><strong><%= listing.transmission %></strong></div>
+      <% } %>
+      <% if (listing.color) { %>
+      <div class="spec"><span>Color</span><strong><%= listing.color %></strong></div>
+      <% } %>
+      <div class="spec"><span>Location</span><strong>📍 <%= listing.location %></strong></div>
+    </div>
+
+    <% if (listing.description) { %>
+      <div class="description">
+        <h3>About this vehicle</h3>
+        <p><%= listing.description %></p>
+      </div>
+    <% } %>
+
+    <div class="seller-box">
+      <h3>Seller Info</h3>
+      <p><strong><%= listing.seller.name %></strong></p>
+      <% if (user) { %>
+        <p>📧 <%= listing.seller.email %></p>
+        <% if (listing.seller.phone) { %><p>📞 <%= listing.seller.phone %></p><% } %>
+      <% } else { %>
+        <p><a href="/auth/login">Login to see contact details</a></p>
+      <% } %>
+    </div>
+
+    <% if (listing.status === 'available') { %>
+      <% if (user && user.id !== listing.seller._id.toString()) { %>
+        <a href="/appointments/new/<%= listing._id %>" class="btn-primary full" style="margin-top:1rem; display:block; text-align:center;">
+          📅 Book Test Drive
+        </a>
+      <% } else if (!user) { %>
+        <a href="/auth/login" class="btn-primary full" style="margin-top:1rem; display:block; text-align:center;">
+          Login to Book Test Drive
+        </a>
+      <% } %>
+    <% } else { %>
+      <div class="alert alert-error" style="margin-top:1rem;">This vehicle has been sold.</div>
+    <% } %>
+  </div>
+</div>
+<%- include('../partials/footer') %>
